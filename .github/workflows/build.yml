@@ -1,0 +1,32 @@
+name: Build Application
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to IBM Cloud Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: us.icr.io
+        username: iamapikey
+        password: ${{ secrets.IBM_CLOUD_API_KEY }}
+
+    - name: Build and Push Docker image
+      env:
+        ICR_NAMESPACE: ${{ vars.IBM_REGISTRY_NAMESPACE }}
+      run: |
+        docker build . --file Dockerfile --tag us.icr.io/$ICR_NAMESPACE/patient-health-frontend:latest
+        docker push us.icr.io/$ICR_NAMESPACE/patient-health-frontend:latest
