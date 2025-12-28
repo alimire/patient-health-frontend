@@ -150,8 +150,8 @@ app.post('/login', function(req, res) {
 // Bootstrap application settings
 app.use(express.static('./public')); // load UI from public folder
 app.use(bodyParser.json())
+
 var host = process.env.HOST || '0.0.0.0';
 app.listen(port, host, function() {
-    logger.debug("Listening on " + host + ":" + port);
+    logger.debug("LISTENING V2 ON " + host + ":" + port);
 });
-
