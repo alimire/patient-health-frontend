@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patient-health-frontend
+  namespace: patient-health
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patient-health-frontend
+  template:
+    metadata:
+      labels:
+        app: patient-health-frontend
+    spec:
+      imagePullSecrets:
+      - name: ibm-cr-secret
+      containers:
+      - name: frontend
+        image: us.icr.io/patient-health-dev/patient-health-frontend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: HOST
+          value: "0.0.0.0"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: patient-health-frontend
+  namespace: patient-health
+spec:
+  selector:
+    app: patient-health-frontend
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: patient-health-frontend
+  namespace: patient-health
+spec:
+  to:
+    kind: Service
+    name: patient-health-frontend
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
