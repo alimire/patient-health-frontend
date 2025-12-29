@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+724460apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: patient-health-frontend
@@ -18,11 +18,14 @@ spec:
       containers:
       - name: frontend
         image: us.icr.io/patient-health-dev/patient-health-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
         - name: HOST
           value: "0.0.0.0"
+        - name: PORT
+          value: "8080"
         resources:
           requests:
             memory: "64Mi"
@@ -50,12 +53,11 @@ metadata:
   name: patient-health-frontend
   namespace: patient-health
 spec:
-  # We are adding the specific Host here to satisfy ArgoCD
   host: patient-health-frontend-patient-health.ibm-openshift-demo-v3-ocp-54fa7508143d3371d96d96009b6a6e9a-0000.us-south.containers.appdomain.cloud
   to:
     kind: Service
     name: patient-health-frontend
+    weight: 100
   port:
     targetPort: 8080
-  tls:
-    termination: edge
+  wildcardPolicy: None
