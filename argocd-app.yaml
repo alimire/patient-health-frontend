@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: patient-health-frontend
+  namespace: openshift-gitops
+spec:
+  destination:
+    name: ''
+    namespace: patient-health
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: k8s
+    repoURL: 'https://github.com/alimire/patient-health-frontend.git'
+    targetRevision: dev
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
