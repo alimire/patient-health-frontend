@@ -27,7 +27,7 @@ spec:
         - name: PORT
           value: "8080"
         - name: API_URL
-          value: "http://patient-health-backend-patient-health.ibm-openshift-demo-v3-ocp-54fa7508143d3371d96d96009b6a6e9a-0000.us-south.containers.appdomain.cloud"
+          value: "https://patient-health-backend-patient-health.ibm-openshift-demo-v3-ocp-54fa7508143d3371d96d96009b6a6e9a-0000.us-south.containers.appdomain.cloud"
         resources:
           requests:
             memory: "64Mi"
